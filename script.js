@@ -1,6 +1,10 @@
 //Adding this to make my code clear and prevent using undeclared variables
 "use strict";
 
+//Global Variables
+//This will select the main tag of html inside of body
+let main = document.querySelector("main");
+
 //array where i'll be storing each book. Here each book will be an object , perhaps myLibrary is an array of objects.
 const myLibrary = [];
 
@@ -13,22 +17,54 @@ function Book(title, author, noOfPages, readingStatus) {
 }
 
 //This function will create objects using above defined object constructors and store them in myLibrary array
-function addBookToLibrary() {
-  let mybook1 = new Book("Beauty and Beast", "Barbie", "88", "Not yet");
-  myLibrary.push(mybook1);
-  let mybook2 = new Book("Beauty ", "Curly", "28", "done");
-  myLibrary.push(mybook2);
-  let mybook3 = new Book("and Beast", "Charlie", "88", "Not yet");
-  myLibrary.push(mybook3);
-  let mybook4 = new Book("GooseBumps", "R L Sine", "48", "Reading");
-  myLibrary.push(mybook4);
+function addBookToLibrary(title, author, noOfPages, readingStatus) {
+  let book = new Book(title, author, noOfPages, readingStatus);
+  myLibrary.push(book);
 }
 
-//Calling the addBookToLibrary function
-addBookToLibrary();
-
-//checking the value of myLibrary
-console.log(myLibrary);
+//Calling the addBookToLibrary function with desired arguments to create books for now
+addBookToLibrary(1, 1, 1, 1);
+addBookToLibrary(2, 2, 2, 2);
+addBookToLibrary(3, 3, 3, 3);
+addBookToLibrary(4, 4, 4, 4);
 
 //function to loop through the array and display each book on the page
-function display() {}
+function displayBooks() {
+  //accesing each object(book) from the array myLibrary
+  myLibrary.forEach((item) => {
+    //creating a container which will store all details about the book
+    let itemBox = document.createElement("div");
+
+    //dividing this box into further 4 rows each row will contain info about book like author title ect
+    //div that will serve as first row of container
+    let titleinfo = document.createElement("div");
+    titleinfo.textContent = `Title : ${item.title}`;
+
+    //div that will serve as first row of container
+    let authorinfo = document.createElement("div");
+
+    //div that will serve as second row of container
+    authorinfo.textContent = `Author : ${item.author}`;
+
+    //div that will serve as third row of container
+    let pagesinfo = document.createElement("div");
+    pagesinfo.textContent = `Pages : ${item.noOfPages}`;
+
+    //div that will serve as fourth row of container
+    let statusinfo = document.createElement("div");
+    statusinfo.textContent = `Status : ${item.readingStatus}`;
+
+    //Adding class "item-box" to container element which contains details about book
+    itemBox.classList.add("item-box");
+
+    //Adding all it's children
+    itemBox.appendChild(titleinfo);
+    itemBox.appendChild(authorinfo);
+    itemBox.appendChild(pagesinfo);
+    itemBox.appendChild(statusinfo);
+
+    //adding container inside main
+    main.appendChild(itemBox);
+  });
+}
+displayBooks();

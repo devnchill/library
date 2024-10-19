@@ -68,3 +68,44 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+/*--------------------------------------Reset ends here ---------------------------------------------*/
+html,
+body {
+  height: 100%;
+}
+body {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 10% 1fr;
+  background-color: pink;
+}
+header {
+  text-align: center;
+  background-color: greenyellow;
+  color: green;
+  grid-area: 1/2/2/-1;
+}
+main {
+  display: grid;
+  grid-area: 2/2/-1/-1;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: 1/1/-1/2;
+  background-color: black;
+}
+nav > button {
+  height: 2rem; /*2*16=32*/
+  width: 90%;
+}
+.item-box {
+  display: grid;
+  border: 2px solid black;
+  grid-template-rows: auto auto auto auto;
+  padding: 10px;
+  margin: 10px 0;
+}
