@@ -1,6 +1,10 @@
 //Adding this to make my code clear and prevent using undeclared variables
 "use strict";
 
+//Global Variables
+//This will help to extract only the last added book to myLibrary everytime function is called
+let i = 0;
+
 //This will select the main tag of html inside of body
 const MAIN = document.querySelector("main");
 const ADDBUTTON = document.getElementById("add-button");
@@ -28,42 +32,44 @@ function addBookToLibrary(title, author, noOfPages, readingStatus) {
 //function to loop through the array and display each book on the page
 function displayBooks() {
   //accesing each object(book) from the array myLibrary
-  myLibrary.forEach((item) => {
-    console.log(item);
-    //creating a container which will store all details about the book
-    let itemBox = document.createElement("div");
+  //myLibrary.forEach((item) => {
+  let item = myLibrary[i];
+  console.log(item);
+  //creating a container which will store all details about the book
+  let itemBox = document.createElement("div");
 
-    //dividing this box into further 4 rows each row will contain info about book like author title ect
-    //div that will serve as first row of container
-    let titleinfo = document.createElement("div");
-    titleinfo.textContent = `Title : ${item.title}`;
+  //dividing this box into further 4 rows each row will contain info about book like author title ect
+  //div that will serve as first row of container
+  let titleinfo = document.createElement("div");
+  titleinfo.textContent = `Title : ${item.title}`;
 
-    //div that will serve as first row of container
-    let authorinfo = document.createElement("div");
+  //div that will serve as first row of container
+  let authorinfo = document.createElement("div");
 
-    //div that will serve as second row of container
-    authorinfo.textContent = `Author : ${item.author}`;
+  //div that will serve as second row of container
+  authorinfo.textContent = `Author : ${item.author}`;
 
-    //div that will serve as third row of container
-    let pagesinfo = document.createElement("div");
-    pagesinfo.textContent = `Pages : ${item.noOfPages}`;
+  //div that will serve as third row of container
+  let pagesinfo = document.createElement("div");
+  pagesinfo.textContent = `Pages : ${item.noOfPages}`;
 
-    //div that will serve as fourth row of container
-    let statusinfo = document.createElement("div");
-    statusinfo.textContent = `Status : ${item.readingStatus}`;
+  //div that will serve as fourth row of container
+  let statusinfo = document.createElement("div");
+  statusinfo.textContent = `Status : ${item.readingStatus}`;
 
-    //Adding class "item-box" to container element which contains details about book
-    itemBox.classList.add("item-box");
+  //Adding class "item-box" to container element which contains details about book
+  itemBox.classList.add("item-box");
 
-    //Adding all it's children
-    itemBox.appendChild(titleinfo);
-    itemBox.appendChild(authorinfo);
-    itemBox.appendChild(pagesinfo);
-    itemBox.appendChild(statusinfo);
+  //Adding all it's children
+  itemBox.appendChild(titleinfo);
+  itemBox.appendChild(authorinfo);
+  itemBox.appendChild(pagesinfo);
+  itemBox.appendChild(statusinfo);
 
-    //adding container inside main
-    MAIN.appendChild(itemBox);
-  });
+  //adding container inside main
+  MAIN.appendChild(itemBox);
+  i++;
+  //});
 }
 
 //adding event listener to add button so that form appears when user clicks on it
