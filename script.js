@@ -15,7 +15,8 @@ const CANCELBUTTON = document.getElementById("cancel-button");
 const myLibrary = [];
 
 //This function will be storing inputs taken from user to book object
-function Book(title, author, noOfPages, readingStatus) {
+function Book(title, author, noOfPages, readingStatus, index) {
+  this.index = index;
   this.title = title;
   this.author = author;
   this.noOfPages = noOfPages;
@@ -45,8 +46,6 @@ function displayBooks() {
 
   //div that will serve as first row of container
   let authorinfo = document.createElement("div");
-
-  //div that will serve as second row of container
   authorinfo.textContent = `Author : ${item.author}`;
 
   //div that will serve as third row of container
