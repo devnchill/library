@@ -1,9 +1,11 @@
 //Adding this to make my code clear and prevent using undeclared variables
 "use strict";
 
-//Global Variables
 //This will select the main tag of html inside of body
-let main = document.querySelector("main");
+const MAIN = document.querySelector("main");
+const ADDBUTTON = document.getElementById("add-button");
+const DIALOG = document.getElementById("dialog");
+const CANCELBUTTON = document.getElementById("cancel-button");
 
 //array where i'll be storing each book. Here each book will be an object , perhaps myLibrary is an array of objects.
 const myLibrary = [];
@@ -22,16 +24,12 @@ function addBookToLibrary(title, author, noOfPages, readingStatus) {
   myLibrary.push(book);
 }
 
-//Calling the addBookToLibrary function with desired arguments to create books for now
-addBookToLibrary(1, 1, 1, 1);
-addBookToLibrary(2, 2, 2, 2);
-addBookToLibrary(3, 3, 3, 3);
-addBookToLibrary(4, 4, 4, 4);
-
+//function to clear all input values once user clicks on cancel or close button
 //function to loop through the array and display each book on the page
 function displayBooks() {
   //accesing each object(book) from the array myLibrary
   myLibrary.forEach((item) => {
+    console.log(item);
     //creating a container which will store all details about the book
     let itemBox = document.createElement("div");
 
@@ -64,7 +62,42 @@ function displayBooks() {
     itemBox.appendChild(statusinfo);
 
     //adding container inside main
-    main.appendChild(itemBox);
+    MAIN.appendChild(itemBox);
   });
 }
+
 displayBooks();
+
+//adding event listener to add button so that form appears when user clicks on it
+ADDBUTTON.addEventListener("click", () => {
+  DIALOG.showModal();
+});
+
+//adding event listener to add button so that form appears when user clicks on it
+document.getElementById("submit-button").addEventListener("click", () => {
+
+  //Storing input values from user about books
+  let title = document.getElementById("title").value;
+  let author = document.getElementById("author").value;
+  let noOfPages = document.getElementById("pages").value;
+  let readingStatus = document.getElementById("status").value;
+
+  //checking if all parameters are present or not and stopping if it isn't
+  if (!title || !author || !noOfPages || !readingStatus) {
+    console.log("Some fields are empty");
+    return; // Stop if any field is empty
+  }
+  addBookToLibrary(title, author, noOfPages, readingStatus);
+  displayBooks();
+  title = "";
+  author = "";
+  noOfPages = "";
+  readingStatus = "";
+
+  DIALOG.close();
+});
+
+//adding addEventListener to CANCELBUTTON so that form is closed on clicking cancel
+CANCELBUTTON.addEventListener("click", () => {
+  DIALOG.close();
+});
