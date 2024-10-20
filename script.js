@@ -66,8 +66,6 @@ function displayBooks() {
   });
 }
 
-displayBooks();
-
 //adding event listener to add button so that form appears when user clicks on it
 ADDBUTTON.addEventListener("click", () => {
   DIALOG.showModal();
@@ -75,7 +73,6 @@ ADDBUTTON.addEventListener("click", () => {
 
 //adding event listener to add button so that form appears when user clicks on it
 document.getElementById("submit-button").addEventListener("click", () => {
-
   //Storing input values from user about books
   let title = document.getElementById("title").value;
   let author = document.getElementById("author").value;
@@ -87,8 +84,14 @@ document.getElementById("submit-button").addEventListener("click", () => {
     console.log("Some fields are empty");
     return; // Stop if any field is empty
   }
+
+  //Adding book created to the library
   addBookToLibrary(title, author, noOfPages, readingStatus);
+
+  //display the book on main section of page
   displayBooks();
+
+  //clearing all input value once it's book is created and stored there
   title = "";
   author = "";
   noOfPages = "";
