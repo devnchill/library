@@ -3,13 +3,14 @@
 
 //Global Variables
 let index = 0;
-//This will help to extract only the last added book to myLibrary everytime function is called
 
 //This will select the main tag of html inside of body
 const MAIN = document.querySelector("main");
+
 const ADDBUTTON = document.getElementById("add-button");
 const DIALOG = document.getElementById("dialog");
 const CANCELBUTTON = document.getElementById("cancel-button");
+let removeButton = document.createElement("button");
 
 //array where i'll be storing each book. Here each book will be an object , perhaps myLibrary is an array of objects.
 const myLibrary = [];
@@ -28,13 +29,17 @@ function addBookToLibrary(title, author, noOfPages, readingStatus, index) {
   let book = new Book(title, author, noOfPages, readingStatus, index);
   myLibrary.push(book);
 }
-
-//function to clear all input values once user clicks on cancel or close button
+function removeIfExists() {
+  var x = document.querySelectorAll(".item-box");
+  x.forEach((e) => {
+    e.remove();
+  });
+}
 //function to loop through the array and display each book on the page
 function displayBooks() {
+  removeIfExists();
   //accesing each object(book) from the array myLibrary
   myLibrary.forEach((item) => {
-    console.log(item);
     //creating a container which will store all details about the book
     let itemBox = document.createElement("div");
 
@@ -55,6 +60,7 @@ function displayBooks() {
     let statusinfo = document.createElement("div");
     statusinfo.textContent = `Status : ${item.readingStatus}`;
 
+    //button which will remove that particular book
     //Adding class "item-box" to container element which contains details about book
     itemBox.classList.add("item-box");
 
