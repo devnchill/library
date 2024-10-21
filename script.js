@@ -2,22 +2,19 @@
 "use strict";
 
 //Global Variables
-let index = 0;
+let buttonIndex = 0;
 
 //This will select the main tag of html inside of body
 const MAIN = document.querySelector("main");
-
 const ADDBUTTON = document.getElementById("add-button");
 const DIALOG = document.getElementById("dialog");
 const CANCELBUTTON = document.getElementById("cancel-button");
-let removeButton = document.createElement("button");
 
 //array where i'll be storing each book. Here each book will be an object , perhaps myLibrary is an array of objects.
 const myLibrary = [];
 
 //This function will be storing inputs taken from user to book object
-function Book(title, author, noOfPages, readingStatus, index) {
-  this.index = index;
+function Book(title, author, noOfPages, readingStatus) {
   this.title = title;
   this.author = author;
   this.noOfPages = noOfPages;
@@ -25,19 +22,25 @@ function Book(title, author, noOfPages, readingStatus, index) {
 }
 
 //This function will create objects using above defined object constructors and store them in myLibrary array
-function addBookToLibrary(title, author, noOfPages, readingStatus, index) {
-  let book = new Book(title, author, noOfPages, readingStatus, index);
+function addBookToLibrary(title, author, noOfPages, readingStatus) {
+  let book = new Book(title, author, noOfPages, readingStatus);
   myLibrary.push(book);
 }
 function removeIfExists() {
-  var x = document.querySelectorAll(".item-box");
+  //selects all bookobjects which are already being displayedf
+  let x = document.querySelectorAll(".item-box");
   x.forEach((e) => {
+    //removes them
     e.remove();
   });
 }
 //function to loop through the array and display each book on the page
 function displayBooks() {
   removeIfExists();
+
+  //data-attribute for index belongs to whole number
+  buttonIndex = 0;
+
   //accesing each object(book) from the array myLibrary
   myLibrary.forEach((item) => {
     //creating a container which will store all details about the book
@@ -61,6 +64,18 @@ function displayBooks() {
     statusinfo.textContent = `Status : ${item.readingStatus}`;
 
     //button which will remove that particular book
+    let removeButton = document.createElement("button");
+    removeButton.classList.add("removeParticularBook");
+    removeButton.textContent = "REMOVE";
+    removeButton.dataset.index = buttonIndex;
+
+    removeButton.addEventListener("click", function (e) {
+      let buttonId = e.target.dataset.index;
+      myLibrary.splice(buttonId, 1);
+      displayBooks();
+    });
+    buttonIndex++;
+
     //Adding class "item-box" to container element which contains details about book
     itemBox.classList.add("item-box");
 
@@ -69,12 +84,12 @@ function displayBooks() {
     itemBox.appendChild(authorinfo);
     itemBox.appendChild(pagesinfo);
     itemBox.appendChild(statusinfo);
+    itemBox.appendChild(removeButton);
 
     //adding container inside main
     MAIN.appendChild(itemBox);
   });
 }
-function refresh() {}
 
 //adding event listener to add button so that form appears when user clicks on it
 ADDBUTTON.addEventListener("click", () => {
@@ -82,7 +97,7 @@ ADDBUTTON.addEventListener("click", () => {
 });
 
 //adding event listener to add button so that form appears when user clicks on it
-document.getElementById("submit-button").addEventListener("click", () => {
+document.getElementById("create").addEventListener("click", () => {
   //Storing input values from user about books
   let title = document.getElementById("title").value;
   let author = document.getElementById("author").value;
@@ -96,19 +111,16 @@ document.getElementById("submit-button").addEventListener("click", () => {
   }
 
   //Adding book created to the library
-  addBookToLibrary(title, author, noOfPages, readingStatus, index);
-  index++;
+  addBookToLibrary(title, author, noOfPages, readingStatus);
 
-  refresh();
   //display the book on main section of page
   displayBooks();
 
   //clearing all input value once it's book is created and stored there
-  title = "";
-  author = "";
-  noOfPages = "";
-  readingStatus = "";
-
+document.getElementById("title").value = "";
+  document.getElementById("author").value = "";
+  document.getElementById("pages").value = "";
+  document.getElementById("status").value = "";
   DIALOG.close();
 });
 
