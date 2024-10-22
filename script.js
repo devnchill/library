@@ -2,7 +2,7 @@
 "use strict";
 
 //Global Variables
-let buttonIndex = 0;
+//let buttonIndex = 0;
 
 //This will select the main tag of html inside of body
 const MAIN = document.querySelector("main");
@@ -34,12 +34,13 @@ function removeIfExists() {
     e.remove();
   });
 }
+
 //function to loop through the array and display each book on the page
 function displayBooks() {
   removeIfExists();
 
   //data-attribute for index belongs to whole number
-  buttonIndex = 0;
+  let buttonIndex = 0;
 
   //accesing each object(book) from the array myLibrary
   myLibrary.forEach((item) => {
@@ -63,6 +64,20 @@ function displayBooks() {
     let statusinfo = document.createElement("div");
     statusinfo.textContent = `Status : ${item.readingStatus}`;
 
+    //div that will serve as container for buttons
+    let buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
+    let statusButton = document.createElement("button");
+    statusButton.textContent = "MarkComplete";
+    statusButton.addEventListener("click", () => {
+      if (item.readingStatus === "MarkComplete") {
+        item.readingStatus = "Completed";
+      } else {
+        item.readingStatus = "MarkComplete";
+      }
+      statusButton.textContent = item.readingStatus;
+    });
+
     //button which will remove that particular book
     let removeButton = document.createElement("button");
     removeButton.classList.add("removeParticularBook");
@@ -84,6 +99,8 @@ function displayBooks() {
     itemBox.appendChild(authorinfo);
     itemBox.appendChild(pagesinfo);
     itemBox.appendChild(statusinfo);
+    itemBox.appendChild(buttonContainer);
+    itemBox.appendChild(statusButton);
     itemBox.appendChild(removeButton);
 
     //adding container inside main
@@ -117,7 +134,7 @@ document.getElementById("create").addEventListener("click", () => {
   displayBooks();
 
   //clearing all input value once it's book is created and stored there
-document.getElementById("title").value = "";
+  document.getElementById("title").value = "";
   document.getElementById("author").value = "";
   document.getElementById("pages").value = "";
   document.getElementById("status").value = "";
