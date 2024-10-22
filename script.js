@@ -2,18 +2,37 @@
 "use strict";
 
 //Global Variables
-//let buttonIndex = 0;
-
 //This will select the main tag of html inside of body
 const MAIN = document.querySelector("main");
+//Button which will open the dialog to add books
 const ADDBUTTON = document.getElementById("add-button");
+//Selects the dialog element from html
 const DIALOG = document.getElementById("dialog");
+//Will cancel addition of book whilst adding the book
 const CANCELBUTTON = document.getElementById("cancel-button");
 
-//array where i'll be storing each book. Here each book will be an object , perhaps myLibrary is an array of objects.
+function clearAllInput() {
+  document.getElementById("title").value = "";
+  document.getElementById("author").value = "";
+  document.getElementById("pages").value = "";
+  document.getElementById("status").value = "";
+}
+
+function toggleReadingStatus(book, button) {
+  if (book.readingStatus === "Completed") {
+    book.readingStatus = "Incomplete";
+    button.textContent = "Mark Complete";
+  } else {
+    book.readingStatus = "Completed";
+    button.textContent = "Completed";
+  }
+}
+
+//array where I'll be storing each book. Here each book will be an object, perhaps myLibrary is an array of objects.
 const myLibrary = [];
 
 //This function will be storing inputs taken from user to book object
+//object constructor
 function Book(title, author, noOfPages, readingStatus) {
   this.title = title;
   this.author = author;
@@ -26,9 +45,12 @@ function addBookToLibrary(title, author, noOfPages, readingStatus) {
   let book = new Book(title, author, noOfPages, readingStatus);
   myLibrary.push(book);
 }
+
+//this function will remove all books which are being displayed at the moment
 function removeIfExists() {
-  //selects all bookobjects which are already being displayedf
+  //selects all book objects which are already being displayed
   let x = document.querySelectorAll(".item-box");
+  //e is storing individual books each time
   x.forEach((e) => {
     //removes them
     e.remove();
@@ -37,22 +59,20 @@ function removeIfExists() {
 
 //function to loop through the array and display each book on the page
 function displayBooks() {
+  //remove all books currently being displayed
   removeIfExists();
 
-  //data-attribute for index belongs to whole number
-  let buttonIndex = 0;
-
-  //accesing each object(book) from the array myLibrary
-  myLibrary.forEach((item) => {
+  //accessing each object (book) from the array myLibrary
+  myLibrary.forEach((item, index) => {
     //creating a container which will store all details about the book
     let itemBox = document.createElement("div");
 
-    //dividing this box into further 4 rows each row will contain info about book like author title ect
+    //dividing this box into further 4 rows, each row will contain info about the book like author, title, etc.
     //div that will serve as first row of container
     let titleinfo = document.createElement("div");
     titleinfo.textContent = `Title : ${item.title}`;
 
-    //div that will serve as first row of container
+    //div that will serve as second row of container
     let authorinfo = document.createElement("div");
     authorinfo.textContent = `Author : ${item.author}`;
 
@@ -60,60 +80,62 @@ function displayBooks() {
     let pagesinfo = document.createElement("div");
     pagesinfo.textContent = `Pages : ${item.noOfPages}`;
 
-    //div that will serve as fourth row of container
-    let statusinfo = document.createElement("div");
-    statusinfo.textContent = `Status : ${item.readingStatus}`;
-
     //div that will serve as container for buttons
     let buttonContainer = document.createElement("div");
     buttonContainer.classList.add("button-container");
+
+    //This button will help to mark whether it's done reading the whole book or not
     let statusButton = document.createElement("button");
-    statusButton.textContent = "MarkComplete";
+    //here item.readingStatus stores the reading status of book (current item) from myLibrary
+    statusButton.textContent =
+      item.readingStatus === "Completed" ? "Completed" : "Mark Complete";
+    //Will toggle between done or not reading complete book
     statusButton.addEventListener("click", () => {
-      if (item.readingStatus === "MarkComplete") {
-        item.readingStatus = "Completed";
-      } else {
-        item.readingStatus = "MarkComplete";
-      }
-      statusButton.textContent = item.readingStatus;
+      toggleReadingStatus(item, statusButton);
     });
 
     //button which will remove that particular book
     let removeButton = document.createElement("button");
     removeButton.classList.add("removeParticularBook");
     removeButton.textContent = "REMOVE";
-    removeButton.dataset.index = buttonIndex;
+    removeButton.dataset.index = index; // Store index for removal
 
+    //remove that specific book and call displayBooks function
     removeButton.addEventListener("click", function (e) {
-      let buttonId = e.target.dataset.index;
-      myLibrary.splice(buttonId, 1);
-      displayBooks();
+      const indexToRemove = e.target.dataset.index; // Get the index from dataset
+      myLibrary.splice(indexToRemove, 1); // Remove the book
+      displayBooks(); // Refresh the list
     });
-    buttonIndex++;
 
     //Adding class "item-box" to container element which contains details about book
     itemBox.classList.add("item-box");
 
-    //Adding all it's children
+    //Adding all its children
     itemBox.appendChild(titleinfo);
     itemBox.appendChild(authorinfo);
     itemBox.appendChild(pagesinfo);
-    itemBox.appendChild(statusinfo);
     itemBox.appendChild(buttonContainer);
-    itemBox.appendChild(statusButton);
-    itemBox.appendChild(removeButton);
+    buttonContainer.appendChild(statusButton);
+    buttonContainer.appendChild(removeButton);
 
     //adding container inside main
     MAIN.appendChild(itemBox);
   });
 }
 
-//adding event listener to add button so that form appears when user clicks on it
-ADDBUTTON.addEventListener("click", () => {
-  DIALOG.showModal();
-});
+//prepopulating with books
+addBookToLibrary("Title 1", "Author 1", 300, "Completed");
+addBookToLibrary("Title 2", "Author 2", 250, "Mark Complete");
+addBookToLibrary("Title 3", "Author 3", 400, "Completed");
+addBookToLibrary("Title 4", "Author 4", 150, "Mark Complete");
+displayBooks();
 
 //adding event listener to add button so that form appears when user clicks on it
+ADDBUTTON.addEventListener("click", () => {
+  DIALOG.showModal(); // Show the dialog when the add button is clicked
+});
+
+//adding event listener to create button to add a book when the form is submitted
 document.getElementById("create").addEventListener("click", () => {
   //Storing input values from user about books
   let title = document.getElementById("title").value;
@@ -133,15 +155,14 @@ document.getElementById("create").addEventListener("click", () => {
   //display the book on main section of page
   displayBooks();
 
-  //clearing all input value once it's book is created and stored there
-  document.getElementById("title").value = "";
-  document.getElementById("author").value = "";
-  document.getElementById("pages").value = "";
-  document.getElementById("status").value = "";
+  //clearing all input value once a book is created and stored
+  clearAllInput();
   DIALOG.close();
 });
 
 //adding addEventListener to CANCELBUTTON so that form is closed on clicking cancel
 CANCELBUTTON.addEventListener("click", () => {
+  //clearing form input if user clicks cancel button
+  clearAllInput();
   DIALOG.close();
 });

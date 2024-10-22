@@ -18,23 +18,25 @@
           <ul>
             <li>
               <label for="title">Title :</label>
-              <input id="title" type="text" name="title" />
+              <input required id="title" type="text" name="title" />
             </li>
             <li>
               <label for="author">Author :</label>
-              <input id="author" type="text" name="author" />
+              <input required id="author" type="text" name="author" />
             </li>
             <li>
               <label for="pages">Pages :</label>
-              <input type="number" id="pages" name="pages" />
+              <input type="number" required id="pages" name="pages" />
             </li>
             <li>
-              <label for="status">Status :</label>
-              <input type="text" id="status" name="status" />
+              <select id="status">
+                <option value="Incomplete">Incomplete</option>
+                <option value="Completed">Completed</option>
+              </select>
             </li>
           </ul>
           <button id="create" type="button">Add</button>
-          <button id="cancel-button" type="button">Cancel</button>
+          <button id="cancel-button" required type="button">Cancel</button>
         </form>
       </dialog>
     </main>
