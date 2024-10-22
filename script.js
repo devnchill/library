@@ -15,17 +15,13 @@ function clearAllInput() {
   document.getElementById("title").value = "";
   document.getElementById("author").value = "";
   document.getElementById("pages").value = "";
-  document.getElementById("status").value = "";
+  document.getElementById("status").value = "Incomplete";
 }
 
 function toggleReadingStatus(book, button) {
-  if (book.readingStatus === "Completed") {
-    book.readingStatus = "Incomplete";
-    button.textContent = "Mark Complete";
-  } else {
-    book.readingStatus = "Completed";
-    button.textContent = "Completed";
-  }
+  book.isRead = !book.isRead;
+  book.readingStatus = book.isRead ? "Completed" : "Mark Complete";
+  button.textContent = book.isRead ? "Completed" : "Mark Complete";
 }
 
 //array where I'll be storing each book. Here each book will be an object, perhaps myLibrary is an array of objects.
@@ -33,16 +29,17 @@ const myLibrary = [];
 
 //This function will be storing inputs taken from user to book object
 //object constructor
-function Book(title, author, noOfPages, readingStatus) {
+function Book({ title, author, pageCount, readingStatus }) {
   this.title = title;
   this.author = author;
-  this.noOfPages = noOfPages;
+  this.pageCount = pageCount;
   this.readingStatus = readingStatus;
+  this.isRead = readingStatus === "Completed";
 }
 
 //This function will create objects using above defined object constructors and store them in myLibrary array
-function addBookToLibrary(title, author, noOfPages, readingStatus) {
-  let book = new Book(title, author, noOfPages, readingStatus);
+function addBookToLibrary({ title, author, pageCount, readingStatus }) {
+  let book = new Book({ title, author, pageCount, readingStatus });
   myLibrary.push(book);
 }
 
@@ -78,7 +75,7 @@ function displayBooks() {
 
     //div that will serve as third row of container
     let pagesinfo = document.createElement("div");
-    pagesinfo.textContent = `Pages : ${item.noOfPages}`;
+    pagesinfo.textContent = `Pages : ${item.pageCount}`;
 
     //div that will serve as container for buttons
     let buttonContainer = document.createElement("div");
@@ -124,10 +121,30 @@ function displayBooks() {
 }
 
 //prepopulating with books
-addBookToLibrary("Title 1", "Author 1", 300, "Completed");
-addBookToLibrary("Title 2", "Author 2", 250, "Mark Complete");
-addBookToLibrary("Title 3", "Author 3", 400, "Completed");
-addBookToLibrary("Title 4", "Author 4", 150, "Mark Complete");
+addBookToLibrary({
+  title: "Title 1",
+  author: "Author 1",
+  pageCount: 100,
+  readingStatus: "Completed",
+});
+addBookToLibrary({
+  title: "Title 2",
+  author: "Author 2",
+  pageCount: 200,
+  readingStatus: "Completed",
+});
+addBookToLibrary({
+  title: "Title 3",
+  author: "Author 3",
+  pageCount: 300,
+  readingStatus: "Completed",
+});
+addBookToLibrary({
+  title: "Title 4",
+  author: "Author 4",
+  pageCount: 400,
+  readingStatus: "Completed",
+});
 displayBooks();
 
 //adding event listener to add button so that form appears when user clicks on it
@@ -136,21 +153,29 @@ ADDBUTTON.addEventListener("click", () => {
 });
 
 //adding event listener to create button to add a book when the form is submitted
-document.getElementById("create").addEventListener("click", () => {
+document.getElementById("create").addEventListener("click", (event) => {
+  event.preventDefault();
   //Storing input values from user about books
   let title = document.getElementById("title").value;
   let author = document.getElementById("author").value;
-  let noOfPages = document.getElementById("pages").value;
+  let pageCount = parseInt(document.getElementById("pages").value);
   let readingStatus = document.getElementById("status").value;
 
   //checking if all parameters are present or not and stopping if it isn't
-  if (!title || !author || !noOfPages || !readingStatus) {
-    console.log("Some fields are empty");
+  if (!title || !author || !pageCount || !readingStatus || pageCount <= 0) {
+    console.log("Some fields are empty or invalid input");
+    alert("Some fields are empty or invalid input");
     return; // Stop if any field is empty
   }
 
   //Adding book created to the library
-  addBookToLibrary(title, author, noOfPages, readingStatus);
+  //addBookToLibrary(title, author, pageCount, readingStatus);
+  addBookToLibrary({
+    title: title,
+    author: author,
+    pageCount: pageCount,
+    readingStatus: readingStatus,
+  });
 
   //display the book on main section of page
   displayBooks();
