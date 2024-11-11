@@ -29,12 +29,14 @@ const myLibrary = [];
 
 //This function will be storing inputs taken from user to book object
 //object constructor
-function Book({ title, author, pageCount, readingStatus }) {
-  this.title = title;
-  this.author = author;
-  this.pageCount = pageCount;
-  this.readingStatus = readingStatus;
-  this.isRead = readingStatus === "Completed";
+class Book {
+  constructor({ title, author, pageCount, readingStatus }) {
+    this.title = title;
+    this.author = author;
+    this.pageCount = pageCount;
+    this.readingStatus = readingStatus;
+    this.isRead = readingStatus === "Completed";
+  }
 }
 
 //This function will create objects using above defined object constructors and store them in myLibrary array
@@ -191,3 +193,4 @@ CANCELBUTTON.addEventListener("click", () => {
   clearAllInput();
   DIALOG.close();
 });
+console.log("HELL");
