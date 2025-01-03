@@ -14,22 +14,34 @@
     </nav>
     <main>
       <dialog id="dialog">
-        <form>
+        <form method="dialog">
           <ul>
             <li>
               <label for="title">Title :</label>
-              <input required id="title" type="text" name="title" />
+              <input
+                minlength="3"
+                required
+                id="title"
+                type="text"
+                name="title"
+              />
             </li>
             <li>
               <label for="author">Author :</label>
-              <input required id="author" type="text" name="author" />
+              <input
+                minlength="3"
+                required
+                id="author"
+                type="text"
+                name="author"
+              />
             </li>
             <li>
               <label for="pages">Pages :</label>
               <input min="1" type="number" required id="pages" name="pages" />
             </li>
             <li>
-              <select id="status">
+              <select required id="status">
                 <option value="Incomplete">Incomplete</option>
                 <option value="Completed">Completed</option>
               </select>

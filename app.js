@@ -7,7 +7,8 @@ const MAIN = document.querySelector("main");
 //Button which will open the dialog to add books
 const ADDBUTTON = document.getElementById("add-button");
 //Selects the dialog element from html
-const DIALOG = document.getElementById("dialog");
+const FORM = document.querySelector("form");
+const DIALOG = document.querySelector("dialog");
 //Will cancel addition of book whilst adding the book
 const CANCELBUTTON = document.getElementById("cancel-button");
 
@@ -153,23 +154,14 @@ ADDBUTTON.addEventListener("click", () => {
 });
 
 //adding event listener to create button to add a book when the form is submitted
-document.getElementById("create").addEventListener("click", (event) => {
-  event.preventDefault();
+FORM.addEventListener("submit", () => {
   //Storing input values from user about books
   let title = document.getElementById("title").value;
   let author = document.getElementById("author").value;
   let pageCount = parseInt(document.getElementById("pages").value);
   let readingStatus = document.getElementById("status").value;
 
-  //checking if all parameters are present or not and stopping if it isn't
-  if (!title || !author || !pageCount || !readingStatus || pageCount <= 0) {
-    console.log("Some fields are empty or invalid input");
-    alert("Some fields are empty or invalid input");
-    return; // Stop if any field is empty
-  }
-
   //Adding book created to the library
-  //addBookToLibrary(title, author, pageCount, readingStatus);
   addBookToLibrary({
     title: title,
     author: author,
@@ -182,7 +174,6 @@ document.getElementById("create").addEventListener("click", (event) => {
 
   //clearing all input value once a book is created and stored
   clearAllInput();
-  DIALOG.close();
 });
 
 //adding addEventListener to CANCELBUTTON so that form is closed on clicking cancel
